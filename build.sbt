@@ -3,7 +3,7 @@ organization := "itsmeijers"
 version := "0.1"
 scalaVersion := "2.11.8"
 
-scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
+scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8", "postFixOps")
 
 val akkaVersion = "2.4.2"
 
