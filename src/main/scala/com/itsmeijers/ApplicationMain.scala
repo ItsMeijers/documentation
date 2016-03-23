@@ -11,7 +11,8 @@ object ApplicationMain extends App {
 
   val parserScheduler = system.actorOf(ParserScheduler.props(documentRetriever), "parserScheduler")
 
-  val location = "/Users/ThomasWorkBook/apidocs/scala-library"
+  // change location that it takes scala-library and later on it splits it in index, deprecated-list, scala
+  val location = "/scala-library/scala"
 
   parserScheduler ! ParserScheduler.ParseDocuments(location)
 

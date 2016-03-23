@@ -4,6 +4,7 @@ import akka.actor._
 import java.io.File
 import DocumentRetriever._
 import net.ruippeixotog.scalascraper.browser.Browser
+import scala.util.{Try, Success, Failure}
 
 class DocumentRetriever extends Actor with ActorLogging {
 
@@ -11,14 +12,24 @@ class DocumentRetriever extends Actor with ActorLogging {
 
    def receive = {
       case RetrieveDocs(location) =>
-         val files = getFileTree(new File(location))
-         val htmlFiles = files.filter(f => """.*\.html$""".r.findFirstIn(f.getName).isDefined)
+      // scala = location + "/scala"
+      // deprecetedFile = location + "/deprecated-list.html"
+      // index = location + "/index"
+         Try(new File(getClass.getResource(location).toURI)) match {
+           case Failure(e) =>
+             println("****************failure!")
+             sender() ! e.getMessage()
+           case Success(dir) => {
+             val files = getFileTree(dir)
+             val htmlFiles = files.filter(f => """.*\.html$""".r.findFirstIn(f.getName).isDefined)
 
-         sender() ! ParserScheduler.AmountOfDocuments(htmlFiles.length)
+             sender() ! ParserScheduler.AmountOfDocuments(htmlFiles.length)
 
-         htmlFiles.foreach { f =>
-            val document = browser.parseFile(f)
-            sender() ! ParserScheduler.RouteParseDocument(document)
+             htmlFiles.foreach { f =>
+                val document = browser.parseFile(f)
+                sender() ! ParserScheduler.RouteParseDocument(document)
+             }
+           }
          }
    }
 
