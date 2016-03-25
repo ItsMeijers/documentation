@@ -15,11 +15,13 @@ class DocumentScraper extends Actor with ActorLogging {
 
    val browser = new Browser
 
+   val scraper = DocumentationItemScraper.scrapeDocumentationItem
+
    def receive = {
       case ScrapeFile(file) =>
          val document = browser.parseFile(file)
-         val test = DocumentationItemScraper.scrapeSignature.run(document)
-         println(s"Signature: $test")
+         val result = scraper.run(document)
+         //println(s"$result")
       case unkown =>
          // handle unknown
    }
