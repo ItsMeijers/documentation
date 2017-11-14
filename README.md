@@ -1,4 +1,1 @@
-activator-akka-scala-seed
-=========================
-
-A minimal seed template for an Akka with Scala build 
+# TODO: look at this see if I can change it into a hoogle ish!!!!
